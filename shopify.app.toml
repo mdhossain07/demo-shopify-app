@@ -2,7 +2,7 @@
 
 client_id = "dbb38be31575d41009deffe47c326d7a"
 name = "my-test-app"
-application_url = "https://encyclopedia-reproduced-ones-pat.trycloudflare.com"
+application_url = "https://supreme-rid-bike-bookmark.trycloudflare.com"
 embedded = true
 
 [build]
@@ -16,9 +16,9 @@ scopes = "write_products"
 
 [auth]
 redirect_urls = [
-  "https://encyclopedia-reproduced-ones-pat.trycloudflare.com/auth/callback",
-  "https://encyclopedia-reproduced-ones-pat.trycloudflare.com/auth/shopify/callback",
-  "https://encyclopedia-reproduced-ones-pat.trycloudflare.com/api/auth/callback"
+  "https://supreme-rid-bike-bookmark.trycloudflare.com/auth/callback",
+  "https://supreme-rid-bike-bookmark.trycloudflare.com/auth/shopify/callback",
+  "https://supreme-rid-bike-bookmark.trycloudflare.com/api/auth/callback"
 ]
 
 [webhooks]

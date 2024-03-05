@@ -90,9 +90,8 @@ export default function Index() {
   );
 
   const [searchId, setSearchId] = useState("");
+  const [searchData, setSearchData] = useState("");
   const [showProduct, setShowProduct] = useState("");
-  const getId = `gid://shopify/Product/${searchId}`;
-
 
   const { data } = useLoaderData();
 
@@ -101,6 +100,7 @@ export default function Index() {
 
   const getProduct = (e) => {
     e.preventDefault();
+    setSearchData(searchId);
     setSearchId("");
     setShowProduct(productInfo);
   };
@@ -111,7 +111,6 @@ export default function Index() {
     }
   }, [productId]);
   const generateProduct = () => submit({}, { replace: true, method: "POST" });
-
 
   return (
     <Page>
@@ -320,7 +319,7 @@ export default function Index() {
                 <br />
                 {showProduct}
                 <br />
-                {showProduct && getId}
+                {searchData}
               </Card>
             </BlockStack>
           </Layout.Section>
