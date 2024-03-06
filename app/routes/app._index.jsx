@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { json } from "@remix-run/node";
 import {
   useActionData,
+  useFetcher,
   useLoaderData,
   useNavigation,
   useSubmit,
@@ -19,6 +20,7 @@ import {
   InlineStack,
 } from "@shopify/polaris";
 import { authenticate } from "../shopify.server";
+import ProductData from "./app.productData";
 
 export const action = async ({ request }) => {
   const { admin } = await authenticate.admin(request);
@@ -65,17 +67,22 @@ export const action = async ({ request }) => {
 
 export const loader = async ({ request }) => {
   const { admin } = await authenticate.admin(request);
-  const response = await admin.graphql(
-    `#graphql
-      query{
-        product(id: "gid://shopify/Product/6927718154334"){
-          title
+
+  const productsResponse = await admin.graphql(
+    `
+    {
+        products(first: 10){
+            nodes{
+                id
+                title
+                description
+            }
         }
-      }
-    `,
-  );
-  const responseJson = await response.json();
-  return json({ data: responseJson });
+    }  
+    `);
+const products = await productsResponse.json();
+
+  return json({  products });
 };
 
 export default function Index() {
@@ -90,26 +97,36 @@ export default function Index() {
   );
 
   const [searchId, setSearchId] = useState("");
-  const [searchData, setSearchData] = useState("");
   const [showProduct, setShowProduct] = useState("");
 
-  const { data } = useLoaderData();
+  const { products } = useLoaderData();
 
-  const productInfo = data.data.product.title;
-  // console.log(productInfo);
+  const fetcher = useFetcher({
+    
+  })
 
   const getProduct = (e) => {
     e.preventDefault();
-    setSearchData(searchId);
+    
+    fetcher.load(`/products/${searchId}`);
     setSearchId("");
-    setShowProduct(productInfo);
+    
+    // if(fetcher?.data){
+    //   setShowProduct(fetcher?.data?.data);
+    // }
   };
+
+  console.log("fetcher data: ", fetcher.data, "loading: ", fetcher.state)
+
+  
+  // setShowProduct(fetcher.data);
 
   useEffect(() => {
     if (productId) {
       shopify.toast.show("Product created");
     }
   }, [productId]);
+
   const generateProduct = () => submit({}, { replace: true, method: "POST" });
 
   return (
@@ -301,7 +318,7 @@ export default function Index() {
                   </List>
                 </BlockStack>
               </Card>
-
+                <ProductData products={products}/>
               <Card>
                 <h2>Enter Product Id</h2>
                 <br />
@@ -309,6 +326,7 @@ export default function Index() {
                   <input
                     type="text"
                     name="id"
+                    required
                     value={searchId}
                     onChange={(e) => setSearchId(e.target.value)}
                   />
@@ -317,12 +335,11 @@ export default function Index() {
                   <button>Search</button>
                 </form>
                 <br />
-                {showProduct}
-                <br />
-                {searchData}
+                {fetcher?.data?.data}
               </Card>
             </BlockStack>
           </Layout.Section>
+
         </Layout>
       </BlockStack>
     </Page>

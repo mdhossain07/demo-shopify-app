@@ -2,7 +2,7 @@
 
 client_id = "dbb38be31575d41009deffe47c326d7a"
 name = "my-test-app"
-application_url = "https://supreme-rid-bike-bookmark.trycloudflare.com"
+application_url = "https://urgent-readers-paso-dispatch.trycloudflare.com"
 embedded = true
 
 [build]
@@ -16,9 +16,9 @@ scopes = "write_products"
 
 [auth]
 redirect_urls = [
-  "https://supreme-rid-bike-bookmark.trycloudflare.com/auth/callback",
-  "https://supreme-rid-bike-bookmark.trycloudflare.com/auth/shopify/callback",
-  "https://supreme-rid-bike-bookmark.trycloudflare.com/api/auth/callback"
+  "https://urgent-readers-paso-dispatch.trycloudflare.com/auth/callback",
+  "https://urgent-readers-paso-dispatch.trycloudflare.com/auth/shopify/callback",
+  "https://urgent-readers-paso-dispatch.trycloudflare.com/api/auth/callback"
 ]
 
 [webhooks]
