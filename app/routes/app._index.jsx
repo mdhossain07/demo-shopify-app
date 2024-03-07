@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { json } from "@remix-run/node";
 import {
+  Form,
   useActionData,
   useFetcher,
   useLoaderData,
@@ -21,6 +22,7 @@ import {
 } from "@shopify/polaris";
 import { authenticate } from "../shopify.server";
 import ProductData from "./app.productData";
+import Signup from "./app.signup";
 
 export const action = async ({ request }) => {
   const { admin } = await authenticate.admin(request);
@@ -79,10 +81,11 @@ export const loader = async ({ request }) => {
             }
         }
     }  
-    `);
-const products = await productsResponse.json();
+    `,
+  );
+  const products = await productsResponse.json();
 
-  return json({  products });
+  return json({ data: products });
 };
 
 export default function Index() {
@@ -95,31 +98,26 @@ export default function Index() {
     "gid://shopify/Product/",
     "",
   );
-
+  
   const [searchId, setSearchId] = useState("");
-  const [showProduct, setShowProduct] = useState("");
+  // const [showProduct, setShowProduct] = useState({
+  //   title: "",
+  //   status: "",
+  //   type: "",
+  // });
 
-  const { products } = useLoaderData();
+  const { data } = useLoaderData();
 
   const fetcher = useFetcher({
-    
-  })
-
-  const getProduct = (e) => {
-    e.preventDefault();
-    
-    fetcher.load(`/products/${searchId}`);
-    setSearchId("");
-    
-    // if(fetcher?.data){
-    //   setShowProduct(fetcher?.data?.data);
-    // }
-  };
-
-  console.log("fetcher data: ", fetcher.data, "loading: ", fetcher.state)
+    key: "getProduct",
+  });
 
   
-  // setShowProduct(fetcher.data);
+
+  // console.log("fetcher data: ", fetcher.data, "loading: ", fetcher.state);
+
+  const fetchedData = fetcher?.data?.productData;
+  console.log("fetched Data", fetchedData);
 
   useEffect(() => {
     if (productId) {
@@ -128,6 +126,56 @@ export default function Index() {
   }, [productId]);
 
   const generateProduct = () => submit({}, { replace: true, method: "POST" });
+
+  // declaring product creation state
+
+  const [products, setProducts] = useState({
+    title: "",
+    description: "",
+    productType: "",
+  })
+
+  useEffect(() => {
+    const fetchedPorduct = {
+      title: fetchedData?.title,
+      description: fetchedData?.description,
+      productType: fetchedData?.productType
+    }
+    setProducts((prev) => ({
+      ...prev,
+      ...fetchedPorduct
+    }))
+  },[fetchedData])
+  
+  
+  const handleChange = (e) => {
+    e.preventDefault();
+    const name = e.target.name;
+    const value = e.target.value;
+    setProducts({...products, [name]: value})
+  }
+  
+  const getProduct = async (e) => {
+    e.preventDefault();
+    fetcher.load(`/products/${searchId}`);
+    // setProducts({...products});
+  };
+
+  // console.log("state products", products);
+  
+  // const handleAddProduct = (product) => {
+  //   console.log('product details', product);
+  //   fetcher.submit(
+  //     {
+  //         products
+  //     },
+  //     {
+  //       method: "POST",
+  //       encType: "application/json",
+  //       action: "/products/978898"
+  //     }
+  //   )
+  // }
 
   return (
     <Page>
@@ -318,28 +366,42 @@ export default function Index() {
                   </List>
                 </BlockStack>
               </Card>
-                <ProductData products={products}/>
+              {/* <ProductData products={products}/> */}
               <Card>
                 <h2>Enter Product Id</h2>
-                <br />
                 <form onSubmit={getProduct}>
                   <input
                     type="text"
-                    name="id"
-                    required
                     value={searchId}
                     onChange={(e) => setSearchId(e.target.value)}
                   />
                   <br />
-                  <br />
                   <button>Search</button>
                 </form>
                 <br />
-                {fetcher?.data?.data}
+                <br />
+                <fetcher.Form method="put" action={`/products/${searchId}`}>
+                    <p>
+                      <input type="text" name="title" value={products.title} onChange={handleChange}/>
+                    </p>
+
+                    <p>
+                      <input type="text" name="description" value={products.description} onChange={handleChange}/>
+                    </p>
+
+                    <p>
+                      <input type="text" name="productType" value={products.productType} onChange={handleChange}/>
+                    </p>
+
+                    <button type="submit">Update</button>
+                  </fetcher.Form>
+                {/* {fetcher?.data?.data} */}
+
+                {/* <Signup onAdd = {handleAddProduct}/> */}
+                  
               </Card>
             </BlockStack>
           </Layout.Section>
-
         </Layout>
       </BlockStack>
     </Page>
