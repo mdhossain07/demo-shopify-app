@@ -2,7 +2,7 @@
 
 client_id = "dbb38be31575d41009deffe47c326d7a"
 name = "my-test-app"
-application_url = "https://pp-best-thy-projects.trycloudflare.com"
+application_url = "https://applicant-rehab-apply-locally.trycloudflare.com"
 embedded = true
 
 [build]
@@ -16,9 +16,9 @@ scopes = "write_products"
 
 [auth]
 redirect_urls = [
-  "https://pp-best-thy-projects.trycloudflare.com/auth/callback",
-  "https://pp-best-thy-projects.trycloudflare.com/auth/shopify/callback",
-  "https://pp-best-thy-projects.trycloudflare.com/api/auth/callback"
+  "https://applicant-rehab-apply-locally.trycloudflare.com/auth/callback",
+  "https://applicant-rehab-apply-locally.trycloudflare.com/auth/shopify/callback",
+  "https://applicant-rehab-apply-locally.trycloudflare.com/api/auth/callback"
 ]
 
 [webhooks]

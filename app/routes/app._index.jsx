@@ -385,7 +385,7 @@ export default function Index() {
                   
               </Card>
 
-              {/* <button> <Link to ={`/products`}> </Link> </button> */}
+              
             </BlockStack>
           </Layout.Section>
         </Layout>
