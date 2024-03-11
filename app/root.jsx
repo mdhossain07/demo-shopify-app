@@ -6,6 +6,8 @@ import {
   ScrollRestoration,
 } from "@remix-run/react";
 
+
+
 export default function App() {
   return (
     <html>
@@ -17,6 +19,7 @@ export default function App() {
           rel="stylesheet"
           href="https://cdn.shopify.com/static/fonts/inter/v4/styles.css"
         />
+        <link rel="stylesheet" href="./tailwind.css" />
         <Meta />
         <Links />
       </head>

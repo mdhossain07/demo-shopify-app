@@ -14,7 +14,7 @@ export async function loader({ params, request }) {
             product(id: $id){
               title,
               description, 
-              productType
+              productType,
             }
           }
         `,

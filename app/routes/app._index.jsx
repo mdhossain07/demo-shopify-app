@@ -21,8 +21,8 @@ import {
   InlineStack,
 } from "@shopify/polaris";
 import { authenticate } from "../shopify.server";
-import ProductData from "./app.productData";
-import Signup from "./app.signup";
+// import ProductData from "./app.productData";
+// import Signup from "./app.signup";
 
 export const action = async ({ request }) => {
   const { admin } = await authenticate.admin(request);
@@ -160,22 +160,6 @@ export default function Index() {
     fetcher.load(`/products/${searchId}`);
     // setProducts({...products});
   };
-
-  // console.log("state products", products);
-  
-  // const handleAddProduct = (product) => {
-  //   console.log('product details', product);
-  //   fetcher.submit(
-  //     {
-  //         products
-  //     },
-  //     {
-  //       method: "POST",
-  //       encType: "application/json",
-  //       action: "/products/978898"
-  //     }
-  //   )
-  // }
 
   return (
     <Page>
@@ -400,6 +384,8 @@ export default function Index() {
                 {/* <Signup onAdd = {handleAddProduct}/> */}
                   
               </Card>
+
+              {/* <button> <Link to ={`/products`}> </Link> </button> */}
             </BlockStack>
           </Layout.Section>
         </Layout>
