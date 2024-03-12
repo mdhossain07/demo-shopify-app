@@ -1,6 +1,9 @@
-import { Link } from "@remix-run/react";
+import { Form, Link } from "@remix-run/react";
+import { DataTable, LegacyCard, Page } from "@shopify/polaris";
 
 export default function ShowData({ products, loading }) {
+
+  console.log(products);
   
   if (loading) {
     return (
@@ -8,6 +11,22 @@ export default function ShowData({ products, loading }) {
         <h2>Data is fetching</h2>
       </>
     );
+  }
+
+const rows = [
+  ['Emerald Silk Gown', '$875.00', 124689, 140, '$122,500.00'],
+    ['Mauve Cashmere Scarf', '$230.00', 124533, 83, '$19,090.00'],
+    [
+      'Navy Merino Wool Blazer with khaki chinos and yellow belt',
+      '$445.00',
+      124518,
+      32,
+      '$14,240.00',
+    ],
+  ];
+
+  const handleConfirm = () => {
+    confirm('Sure you want to delete? ');
   }
   return (
     <div>
@@ -18,6 +37,7 @@ export default function ShowData({ products, loading }) {
             <th>Product Title</th>
             <th>Description</th>
             <th>Action</th>
+            <th>Action</th>
           </tr>
         </thead>
         <tbody>
@@ -27,10 +47,40 @@ export default function ShowData({ products, loading }) {
               <td>{product?.node?.title}</td>
               <td>{product?.node?.descriptionHtml}</td>
               <td> <Link to = {`/products/${product?.node?.id.split("/")[4]}`}>See Details </Link> </td>
+              <td>
+                <Form method="post">
+                  <input type="hidden" name="productId" value={product?.node?.id} />
+                  <button type="submit" name="_action" value="delete" onClick={handleConfirm}>Delete</button>
+                </Form>
+              </td>
             </tr>
           ))}
         </tbody>
       </table>
+
+
+      <Page title="Shopify Products">
+      <LegacyCard>
+        <DataTable
+          columnContentTypes={[
+            'text',
+            'numeric',
+            'numeric',
+            'numeric',
+            'numeric',
+          ]}
+          headings={[
+            'Product',
+            'Price',
+            'SKU Number',
+            'Net quantity',
+            'Net sales',
+          ]}
+          rows={rows}
+          // totals={['', '', '', 255, '$155,830.00']}
+        />
+      </LegacyCard>
+    </Page>
     </div>
   );
 }
