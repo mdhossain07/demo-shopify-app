@@ -1,8 +1,9 @@
-import { Form, Link } from "@remix-run/react";
+import { Link  } from "@remix-run/react";
 import { DataTable, LegacyCard, Page } from "@shopify/polaris";
+import Button from "./Button";
 
 export default function ShowData({ products, loading }) {
-
+  
   console.log(products);
   
   if (loading) {
@@ -25,9 +26,8 @@ const rows = [
     ],
   ];
 
-  const handleConfirm = () => {
-    confirm('Sure you want to delete? ');
-  }
+
+  
   return (
     <div>
       <table className="table-fixed">
@@ -48,10 +48,7 @@ const rows = [
               <td>{product?.node?.descriptionHtml}</td>
               <td> <Link to = {`/products/${product?.node?.id.split("/")[4]}`}>See Details </Link> </td>
               <td>
-                <Form method="post">
-                  <input type="hidden" name="productId" value={product?.node?.id} />
-                  <button type="submit" name="_action" value="delete" onClick={handleConfirm}>Delete</button>
-                </Form>
+                <Button product={product}/>
               </td>
             </tr>
           ))}

@@ -51,7 +51,6 @@ export async function action({ request }) {
   switch (_action) {
     case "delete":
       const pId = formData.get("productId");
-      console.log("product id", pId);
 
       await admin.graphql(
         `#graphql
