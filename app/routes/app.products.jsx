@@ -1,21 +1,38 @@
 import { json } from "@remix-run/node";
 import { authenticate } from "../shopify.server";
-import { useLoaderData } from "@remix-run/react";
+import { useActionData, useLoaderData } from "@remix-run/react";
 import ShowData from "../components/showData";
 import { useState } from "react";
+import UpdateProduct from "../components/UpdateProduct";
 
 export default function Products() {
   const products = useLoaderData();
+  const data = useActionData();
   const [isLoading, setIsLoading] = useState(false);
-  //   console.log(products);
+  const [showModal, setShowModal] = useState(false);
+  const [selectedProduct, setSelectedProduct] = useState(null);
+    console.log(data);
 
   if (!products) {
     setIsLoading(true);
   }
+
+  function handleUpdateProduct(product) {
+    setShowModal(true);
+    setSelectedProduct(product);
+  }
+
   return (
     <div>
       <h2 className="text-2xl font-semibold">Shopify Products</h2>
-      <ShowData products={products} loading={isLoading} />
+      <ShowData
+        products={products}
+        loading={isLoading}
+        onUpdate={handleUpdateProduct}
+      />
+      <br />
+      <br />
+      {showModal && <UpdateProduct product={selectedProduct} />}
     </div>
   );
 }
@@ -31,7 +48,10 @@ export async function loader({ request }) {
                     node{
                         id, 
                         title,
-                        descriptionHtml
+                        descriptionHtml,
+                        featuredImage{
+                          url
+                        }
             }
         }
     }
@@ -62,9 +82,9 @@ export async function action({ request }) {
 
         {
           variables: {
-            "input": {
-              "id": pId
-            }
+            input: {
+              id: pId,
+            },
           },
         },
       );
@@ -72,9 +92,38 @@ export async function action({ request }) {
       return json({ status: "Product Deleted..." });
       break;
 
+    case "update":
+      const prodId = formData.get("prodId");
+      const title = formData.get("title");
+      const details = formData.get("details");
+      const res = await admin.graphql(
+        `#graphql
+        mutation productUpdate($input: ProductInput!){
+          productUpdate(input: $input){
+            product{
+              id, 
+              title, 
+              descriptionHtml
+            }
+          }
+        }`,
+
+        {
+          variables: {
+            input: {
+              id: prodId,
+              title: title,
+              descriptionHtml: details,
+            },
+          },
+        },
+      );
+      const result = await res.json();
+      console.log(result?.data?.productUpdate?.product?.id);
+      return json({ status: "Product Updated" });
+      break;
+
     default:
       break;
   }
-
-  // return json(result);
 }

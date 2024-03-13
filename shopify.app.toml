@@ -2,7 +2,7 @@
 
 client_id = "dbb38be31575d41009deffe47c326d7a"
 name = "my-test-app"
-application_url = "https://believe-server-phys-planes.trycloudflare.com"
+application_url = "https://both-das-ri-buyers.trycloudflare.com"
 embedded = true
 
 [build]
@@ -16,9 +16,9 @@ scopes = "write_products"
 
 [auth]
 redirect_urls = [
-  "https://believe-server-phys-planes.trycloudflare.com/auth/callback",
-  "https://believe-server-phys-planes.trycloudflare.com/auth/shopify/callback",
-  "https://believe-server-phys-planes.trycloudflare.com/api/auth/callback"
+  "https://both-das-ri-buyers.trycloudflare.com/auth/callback",
+  "https://both-das-ri-buyers.trycloudflare.com/auth/shopify/callback",
+  "https://both-das-ri-buyers.trycloudflare.com/api/auth/callback"
 ]
 
 [webhooks]

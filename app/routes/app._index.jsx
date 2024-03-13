@@ -112,12 +112,11 @@ export default function Index() {
     key: "getProduct",
   });
 
-  
 
   // console.log("fetcher data: ", fetcher.data, "loading: ", fetcher.state);
 
   const fetchedData = fetcher?.data?.productData;
-  console.log("fetched Data", fetchedData);
+  // console.log("fetched Data", fetchedData);
 
   useEffect(() => {
     if (productId) {

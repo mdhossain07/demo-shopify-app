@@ -41,7 +41,7 @@ export async function action({ params, request }) {
   const description = formData.get("description");
   const productType = formData.get("productType");
 
-  console.log(title, description, productType);
+  // console.log(title, description, productType);
   
   const response = await admin.graphql(
     `#graphql
